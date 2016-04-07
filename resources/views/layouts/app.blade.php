@@ -60,8 +60,11 @@
 						
 						
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="{{ url('/host_list') }}">View my Ackets</a></li>
+						
+							<!--show most recent acket
+							<li><a href="">mostRecentAcket</a></li>
 							<li class="divider"></li>
+							-->
 							<li><a href="/user/{{Auth::id()}}">My Profile</a></li>
 							<li><a href="{{ url('/settings') }}">My Settings</a></li>
 							<li class="divider"></li>
@@ -76,6 +79,7 @@
     </nav>
 
     @yield('main_content')
+	@yield('host_dashboard')
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>

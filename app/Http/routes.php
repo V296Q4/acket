@@ -23,6 +23,7 @@ Route::group(['middleware' => 'web'], function () {
 	Route::get('/update', 'UpdateController@index');
 	Route::get('/user/{id}', 'UserViewController@index');
 	Route::get('/acket/{id}', 'AcketViewController@index');
+	Route::post('/acket', 'AcketViewController@UpdateAcket');
 	Route::get('/settings', 'SettingsController@index');
 	Route::post('/settings', 'SettingsController@updateSettings');
 	

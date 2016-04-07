@@ -18,7 +18,7 @@
 							</div>
 						</div>
 						
-						<div class="form-group">
+						<!--<div class="form-group">
 							<label class="control-label col-sm-3" for="name">Date Range:</label>
 							<div class="col-sm-6 input-group input-daterange" id='datetimepicker1'>							
 								<input type="text" class="form-control" name="startDate"/>
@@ -27,7 +27,7 @@
 									</span>
 								<input type="text" class="form-control" name="endDate"/>
 							</div>
-						</div>		
+						</div>	-->	
 
 						<div class="form-group">
 							<label class="control-label col-sm-3" for="name">Tags (<a href="#"><span data-toggle="tooltip" title="add space separated tags for searching">?</span></a>):</label>
@@ -42,9 +42,9 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-3" for="name">Participants <span style="color:red">*</span>:</label>
+							<label class="control-label col-sm-3" for="name">Participants (<a href="#"><span data-toggle="tooltip" title="Enter participant separated by commas.  Maximum of 128 participants.  Duplicates are ignored.">?</span></a>) <span style="color:red">*</span>:</label>
 							<div class="col-sm-6"> 
-								<textarea class="form-control" rows="4" name="participants" placeholder="Enter participant separated by commas."></textarea>
+								<textarea class="form-control" rows="4" name="participants" placeholder="Enter participant separated by commas.  Maximum of 128 participants.  Duplicates are ignored." required></textarea>
 							</div>
 						</div>
 						

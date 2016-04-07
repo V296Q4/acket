@@ -32,47 +32,60 @@ class UserViewController extends Controller{
 				$acketCountString = $acketCount . " Ackets Hosted:";
 			}
 			
-			$ownedTournaments = DB::table('tournaments')->where("hostId", $id)->orderBy('updated_date', 'desc')->take(30)->get();
+			$ownedTournaments = DB::table('tournaments')->where("hostId", $id)->orderBy('match_update_date', 'desc')->take(30)->get();
 			$acketListTable = '<table class="table table-striped"><thead><tr><th>Acket Name</th><th>Description</th><th>Status</th><th>Participants</th></tr></thead><tbody>';
 			foreach($ownedTournaments as $tournament){
 				$participantList = $tournament['participantList'];
 				$participantCount = substr_count($participantList, ",") + 1;
-				
+				if(strlen($tournament['name']) > 30){
+					$acketName = substr($tournament['name'],0, 30) . '...';
+				}
+				else{
+					$acketName = $tournament['name'];
+				}
+				if(strlen($tournament['description']) > 50){
+					$acketDescription = substr($tournament['description'], 0, 50) . '...';
+				}
+				else{
+					$acketDescription = $tournament['description'];
+				}
 				$acketStatus = $tournament['status'];
 				$statusString = '';
-				switch($acketStatus){
-						case 0:
-							$statusString = 'Not yet started.';
-							break;
-						case 1:
-							$statusString = 'Complete.';
-							break;						
-						case 2:
-							$statusString = 'Finals in progress.';
-							break;			
-						case 3:
-							$statusString = 'Semi finals in progress.';
-							break;
-						case 4:
-							$statusString = 'Quarter finals in progress.';
-							break;
-						case 5:
-							$statusString = 'Round in progress.';
-							break;	
-							
-						case 6:
-							$statusString = 'Unknown status.';
-							break;
-							
-						case 8:
-							$statusString = 'Cancelled.';
-							break;
-						case 9:
-							$statusString = 'Deleted.';
-							break;
+				switch($acketStatus){//TODO:find new place for this repeated code
+					case 0:
+						$statusString = 'Not yet started.';
+						break;
+					case 1:
+						$statusString = 'Complete.';
+						break;						
+					case 2:
+						$statusString = 'Finals in progress.';
+						break;			
+					case 3:
+						$statusString = 'Semi finals in progress.';
+						break;
+					case 4:
+						$statusString = 'Quarter finals in progress.';
+						break;
+					case 5:
+						$statusString = 'Round in progress.';
+						break;	
+						
+					case 6:
+						$statusString = 'Unknown status.';
+						break;
+					case 7:
+						$statusString = 'Closed.';
+						break;
+					case 8:
+						$statusString = 'Cancelled.';
+						break;
+					case 9:
+						$statusString = 'Deleted.';
+						break;
 							
 				}
-				$acketListTable .= '<tr><td><a href="/acket/' . $tournament["id"] . '">' . $tournament["name"] . '</a></td><td>' . $tournament["description"] . '</td><td>' . $statusString . '</td><td>' . $participantCount . '</td></tr>';
+				$acketListTable .= '<tr><td><a href="/acket/' . $tournament["id"] . '">' . $acketName . '</a></td><td>' . $acketDescription . '</td><td>' . $statusString . '</td><td>' . $participantCount . '</td></tr>';
 			}
 			$acketListTable .= '</tbody></table>';
 					$returnView = View::make('userView')->with([
