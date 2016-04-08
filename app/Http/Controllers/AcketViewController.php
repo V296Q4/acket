@@ -620,37 +620,60 @@ $display_name = (preg_match("/(^(game))(([0-9])+)/", $p1)) ? " ":$p1;
 				$jsonString = $tournament['brackets'];
 				$json = json_decode($jsonString, true);
 
-				$newGameIdString = 'game' . floor(max($winner['gameId'], 1)/2);
+				if($winner['gameId'] == 0){
+					$newGameIdString = 'game' . 0;
+				}
+				else{
+					$newGameIdString = 'game' . floor($winner['gameId'] /2);
+				}
+				
 				$newDepthIdString = 'depth' . ($winner['depthId'] + 1);
+				
+				$depth0games = $tournament['depth0games'];
+				$depth1games = $tournament['depth1games'];
 				
 				if(!array_key_exists($newGameIdString, $json[$newDepthIdString]) && !array_key_exists('game0', $json[$newDepthIdString])){
 					$json[$newDepthIdString]['winner'] = $winner['name'];
-					//$st = 1;
 				}
 				else{
-					if($json[$newDepthIdString][$newGameIdString]['p0'] == ''){//is empty position
-						$json[$newDepthIdString][$newGameIdString]['p0'] = $winner['name'];
-						$winnerUpdate['participantSide'] = 0;
-						//$st = 2;
-					}
-					else if($json[$newDepthIdString][$newGameIdString]['p1'] == ''){//take the other side
-						$json[$newDepthIdString][$newGameIdString]['p1'] = $winner['name'];
-						$winnerUpdate['participantSide'] = 1;
-						//$st = 3;
-					}
+					
+					if($gameDepth == 0){
+						if($depth0games <= $depth1games){
+							$newGameIdString = 'game' . $winner['gameId'];
+							$winnerUpdate['gameId'] = $newGameIdString;
+							if($json[$newDepthIdString][$newGameIdString]['p0'] == '' || strpos($json[$newDepthIdString][$newGameIdString]['p0'],'game') !== false){//is empty position
+								$json[$newDepthIdString][$newGameIdString]['p0'] = $winner['name'];
+								$winnerUpdate['participantSide'] = 0;
+							}
+							else if($json[$newDepthIdString][$newGameIdString]['p1'] == '' || strpos($json[$newDepthIdString][$newGameIdString]['p1'],'game') !== false){//take the other side
+								$json[$newDepthIdString][$newGameIdString]['p1'] = $winner['name'];
+								$winnerUpdate['participantSide'] = 1;
+							}
+						}
+						else{
+							
+							if($json[$newDepthIdString][$newGameIdString]['p0'] == '' || strpos($json[$newDepthIdString][$newGameIdString]['p0'],'game') !== false){//is empty position
+								$json[$newDepthIdString][$newGameIdString]['p0'] = $winner['name'];
+								$winnerUpdate['participantSide'] = 0;
+							}
+							else if($json[$newDepthIdString][$newGameIdString]['p1'] == '' || strpos($json[$newDepthIdString][$newGameIdString]['p1'],'game') !== false){//take the other side
+								$json[$newDepthIdString][$newGameIdString]['p1'] = $winner['name'];
+								$winnerUpdate['participantSide'] = 1;
+							}							
+						}
+					}					
 					else{
-						$newGameIdString = $winner['gameId'];
-						if($json[$newDepthIdString][$newGameIdString]['p0'] == ''){//is empty position
+						if($json[$newDepthIdString][$newGameIdString]['p0'] == '' || strpos($json[$newDepthIdString][$newGameIdString]['p0'],'game') !== false){//is empty position
 							$json[$newDepthIdString][$newGameIdString]['p0'] = $winner['name'];
 							$winnerUpdate['participantSide'] = 0;
 						}
-						else if($json[$newDepthIdString][$newGameIdString]['p1'] == ''){//take the other side
+						else if($json[$newDepthIdString][$newGameIdString]['p1'] == '' || strpos($json[$newDepthIdString][$newGameIdString]['p1'],'game') !== false){//take the other side
 							$json[$newDepthIdString][$newGameIdString]['p1'] = $winner['name'];
 							$winnerUpdate['participantSide'] = 1;
 						}
 					}
+
 				}
-				
 				
 				
 				$brackets = json_encode($json);

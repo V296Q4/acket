@@ -4,6 +4,8 @@ CREATE TABLE tournaments(
 	status int DEFAULT 0,
 	isHidden bool DEFAULT false,
 	gamesPlayed int DEFAULT 0,
+	depth0games int,
+	depth1games int,
     description varchar(4000) DEFAULT null,
 	hostId INTEGER REFERENCES users(id),
 	participantList text NOT NULL,

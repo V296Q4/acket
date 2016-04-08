@@ -26,7 +26,7 @@
 				
 					<br>
 				
-					{!! $participantTable !!}
+					
 					
                 </div>
             </div>

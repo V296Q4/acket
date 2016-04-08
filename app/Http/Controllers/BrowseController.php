@@ -24,14 +24,16 @@ class BrowseController extends Controller{
 			}
 		}
 		else{
-			$title = "Browsing Most Recent Ackets";
-			$activeTournaments = DB::table('tournaments')->orderBy('match_update_date', 'desc')->take(100)->get();
+			$title = "Browsing Ackets";
+			//$activeTournaments = DB::table('tournaments')->orderBy('posted_date', 'desc')->take(100)->get();
+			$activeTournaments = DB::table('tournaments')->take(100)->get();
 		}
 		
 		if($activeTournaments !== null){
-			$table = '<table id="acketTable" class="table table-striped"><thead><tr><th>Acket Name</th><th>Host</th><th>Description</th><th>Participants</th><th>Status</th></tr></thead><tbody>';
+			$table = '<table id="acketTable" class="table table-striped"><thead><tr><th>Acket Name</th><th>Host</th><th>Description</th><th>Posted Date</th><th>Status</th></tr></thead><tbody>';
 			foreach($activeTournaments as $tournament){
-				DB::table('users')->where('id', $tournament["hostId"])->first();
+				//DB::table('users')->where('id', $tournament["hostId"])->first();
+				$posted_date = $tournament['posted_date'];
 				$host = DB::table('users')->where('id', $tournament["hostId"])->first();
 				$hostName = $host["name"];
 				if(strlen($tournament['name']) > 30){
@@ -86,7 +88,7 @@ class BrowseController extends Controller{
 							
 				}
 				
-				$table .= '<tr><td class="col-md-2"><a href="/acket/' . $tournament["id"] . '">' . $acketName . '</a></td><td class="col-md-1"><a href="/user/' . $tournament["hostId"] . '">' .  $hostName . '</a></td><td class="col-md-3">' . $acketDescription . '</td><td>' . $participantCount . '</td><td>'. $statusString.'</td></tr>';
+				$table .= '<tr><td class="col-md-2"><a href="/acket/' . $tournament["id"] . '">' . $acketName . '</a></td><td class="col-md-1"><a href="/user/' . $tournament["hostId"] . '">' .  $hostName . '</a></td><td class="col-md-3">' . $acketDescription . '</td><td>' . $posted_date . '</td><td>'. $statusString.'</td></tr>';
 			}
 			$table .= '</tbody></table>';
 		}
