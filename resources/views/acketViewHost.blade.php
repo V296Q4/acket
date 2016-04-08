@@ -30,18 +30,34 @@
 					@if($status >= 2 && $status <= 5)
 					<label class="control-label col-sm-3">Close the Acket early: </label>
 					{!! Form::submit('Close Acket', array('class'=>'btn btn-danger col-sm-offset-1 col-sm-2', 'id'=>'2', 'name'=>'2')) !!}
+					
 					@elseif($status == 0)
 					<br>
+					<div>
 					<label class="control-label col-sm-3">Cancel the Acket: </label>
+					<div>
 					{!! Form::submit('Cancel Acket', array('class'=>'btn btn-danger col-sm-offset-1 col-sm-2', 'id'=>'3', 'name'=>'3')) !!}	
-					{{ Form::close() }}
+
 					@endif
+					@if($status >= 0 && $status <= 5 && $status != 1)
+					<br>
+				<div class="form-group">
+					<label class="control-label col-sm-3">Log Match: </label>
+					<div class="dropdown col-sm-3">
+					{!! $matchListDropdown !!}
+					</div>
+					<div class="dropdown col-sm-3">
+					{!! $winnerListDropdown !!}
+					</div>
+					{!! Form::hidden('winnerDepthId', $winnerDepthId) !!}	
+					</div>
+					{!! Form::submit('Submit Game', array('class'=>'btn btn-primary col-sm-offset-1 col-sm-2', 'id'=>'4', 'name'=>'4')) !!}	
+					@endif
+					{{ Form::close() }}
 			</div>
 		
 		</div>
 
-    </div>
-</div>
         </div>
     </div>
 </div>

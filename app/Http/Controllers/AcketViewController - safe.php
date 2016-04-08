@@ -20,51 +20,51 @@ class AcketViewController extends Controller{
 
     $hostName = $host['name'];
     $status = $tournament['status'];
-	$statusString = '';
-	switch($status){//TODO:find new place for this repeated code
-		case 0:
-			$statusString = 'Not yet started.';
-			break;
-		case 1:
-			$statusString = 'Complete.';
-			break;						
-		case 2:
-			$statusString = 'Finals in progress.';
-			break;			
-		case 3:
-			$statusString = 'Semi finals in progress.';
-			break;
-		case 4:
-			$statusString = 'Quarter finals in progress.';
-			break;
-		case 5:
-			$statusString = 'Round in progress.';
-			break;	
-			
-		case 6:
-			$statusString = 'Unknown status.';
-			break;
-		case 7:
-			$statusString = 'Closed.';
-			break;
-		case 8:
-			$statusString = 'Cancelled.';
-			break;
-		case 9:
-			$statusString = 'Deleted.';
-			break;
-	}
-	$posted_date = $tournament['posted_date'];
-	$match_update_date = $tournament['match_update_date'];
-	if($match_update_date == $posted_date){
-		$match_update_date = "Never";
-	}
-	$tags = $tournament['tags'];
-	$description = $tournament['description'];
-	$description_update_date = $tournament['description_update_date'];
-	if($description_update_date == $posted_date){
-		$description_update_date = null;
-	}
+		$statusString = '';
+		switch($status){//TODO:find new place for this repeated code
+			case 0:
+				$statusString = 'Not yet started.';
+				break;
+			case 1:
+				$statusString = 'Complete.';
+				break;						
+			case 2:
+				$statusString = 'Finals in progress.';
+				break;			
+			case 3:
+				$statusString = 'Semi finals in progress.';
+				break;
+			case 4:
+				$statusString = 'Quarter finals in progress.';
+				break;
+			case 5:
+				$statusString = 'Round in progress.';
+				break;	
+				
+			case 6:
+				$statusString = 'Unknown status.';
+				break;
+			case 7:
+				$statusString = 'Closed.';
+				break;
+			case 8:
+				$statusString = 'Cancelled.';
+				break;
+			case 9:
+				$statusString = 'Deleted.';
+				break;
+		}
+		$posted_date = $tournament['posted_date'];
+		$match_update_date = $tournament['match_update_date'];
+		if($match_update_date == $posted_date){
+			$match_update_date = "Never";
+		}
+		$tags = $tournament['tags'];
+		$description = $tournament['description'];
+		$description_update_date = $tournament['description_update_date'];
+		if($description_update_date == $posted_date){
+			$description_update_date = null;
+		}
     $participantList = $tournament['participantList'];
     $participantNames = explode(',', $participantList);
     $participantStatus = array();
@@ -367,16 +367,15 @@ class AcketViewController extends Controller{
           }
         }
       }
-    }
-		else{
-			/*
-			num of players is power of 2
-			so draw the first round boxes first
-			then draw the rest
-			*/
+    }else{
+      /*
+      num of players is power of 2
+      so draw the first round boxes first
+      then draw the rest
+      */
 
-			//draw first round
-			$cords_array[0] = array();
+      //draw first round
+      $cords_array[0] = array();
       $second_round = $brackets['depth0'];
       $numOfSecondRoundGames = sizeof($second_round);
       $x_cord = 0;
@@ -437,32 +436,30 @@ class AcketViewController extends Controller{
             );
             $temp_counter++;
           }
+        }else{  //winner
+          $winner = $brackets[$cur_dep]['winner'];
+          $num1 = $cords_array[$i-1][0]['y'];
+          $y_cord = $num1+(25/2);
+          $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
+          $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$winner.'</text>';
+          $svg = $svg.'<line x1="'.($x_cord).'" y1="'.($y_cord+12.5).'" x2="'.($x_cord-50).'" y2="'.($y_cord+12.5).'" style="stroke:black; stroke-width:2" />';
+          $cords_array[$i][] = array(
+            'pname' => $winner,
+            'x' => $x_cord,
+            'y' => $y_cord
+          );
         }
-			else{  //winner
-				$winner = $brackets[$cur_dep]['winner'];
-				$num1 = $cords_array[$i-1][0]['y'];
-				$y_cord = $num1+(25/2);
-				$svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-				$svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$winner.'</text>';
-				$svg = $svg.'<line x1="'.($x_cord).'" y1="'.($y_cord+12.5).'" x2="'.($x_cord-50).'" y2="'.($y_cord+12.5).'" style="stroke:black; stroke-width:2" />';
-				$cords_array[$i][] = array(
-						'pname' => $winner,
-						'x' => $x_cord,
-						'y' => $y_cord
-					);
-			}
-		}
-	}
+      }
+    }
 
-		$svg = $svg.'</g></svg></div>';
+    $svg = $svg.'</g></svg></div>';
 
-		$participantTable = '<table class="table table-striped"><thead><tr><th>Participant</th><th>Status</th></tr><tbody>';
-		foreach($participantNames as $pName){
-			$participantTable .= '<tr><td>' . $pName . '</td><tr>';
-		}
-		$participantTable .= '</tbody></table>';
+    $participantTable = '<table class="table table-striped"><thead><tr><th>Participant</th><th>Status</th></tr><tbody>';
+    foreach($participantNames as $pName){
+      $participantTable .= '<tr><td>' . $pName . '</td><tr>';
+    }
+    $participantTable .= '</tbody></table>';
 
-		$winnerDepthId = -1;
 		if(Auth::id() == $hostId){
 			
 			//select game, select winner, update button
@@ -476,13 +473,11 @@ class AcketViewController extends Controller{
 					//dd($activeParticipantsSideB);
 					if($apb['gameId'] == $apa['gameId']){
 						$matchListDropdown .= "<option value='" . $apa['gameId'] . "'>" . $apa['name'] . " VS " . $apb['name'] . "</option>";
-						$winnerDepthId = $apa["depthId"];
 					}
 				}
 			}
 			$matchListDropdown .= "</select>";
 			$winnerListDropdown = '<select name="winnerSide"><option value="0">Player One</option><option value="1">Player Two</option></select>';
-			
 			$userIsHost = true;		
 		}
 		else{
@@ -507,7 +502,6 @@ class AcketViewController extends Controller{
 			"svg" => $svg,
 			"matchListDropdown" => $matchListDropdown,
 			"winnerListDropdown" => $winnerListDropdown,
-			"winnerDepthId" => $winnerDepthId,
 			"userIsHost" => $userIsHost
 		]);	
 		
@@ -554,7 +548,6 @@ class AcketViewController extends Controller{
 			
 				$gameId = Input::get('gameId');
 				$winnerSide = Input::get('winnerSide');
-				$winnerDepthId = Input::get('winnerDepthId');
 				if($winnerSide == 0){
 					$loserSide = 1;
 				}
@@ -568,46 +561,38 @@ class AcketViewController extends Controller{
 				$loserUpdate['tournamentStatus'] = 1;
 				DB::table('participants')->where('tournamentId', $tournament['id'])->where('participantId', $loser['participantId'])->update($loserUpdate);
 				
-				$winner = DB::table('participants')->where('tournamentId', $tournament['id'])->where('gameId', $gameId)->where('participantSide', $winnerSide)->where('depthId', $winnerDepthId)->first();
-				//dd($winner);
-				//dd($winnerDepthId);
+				$winner = DB::table('participants')->where('tournamentId', $tournament['id'])->where('gameId', $gameId)->where('participantSide', $winnerSide)->first();
 				$winnerUpdate = array();
 				$winnerUpdate['wins'] = $winner['wins'] + 1;
 				$winnerUpdate['depthId'] = $winner['depthId'] + 1;
-				$winnerUpdate['gameId'] = floor(max($winner['gameId'], 1)/2);
-				$winnerUpdate['gameStatus'] = 1;
+				$winnerUpdate['gameId'] = floor($winner['gameId'] / 2);
 				
 				$playerCount = DB::table('participants')->where('tournamentId', $tournament['id'])->count();
-				$maxDepth = (int)(floor(log($playerCount, 2)));
 				$tournamentStatus = $tournament['status'];
 				$tournamentEndDate = '';
+				
 				
 				if($tournament['status'] == 0){
 					$tournamentStatus = 5;
 				}
 				
-				$activePlayersCount = DB::table('participants')->where('tournamentId', $tournament['id'])->where('gameStatus', 0)->where('tournamentStatus', 0)->count();
-
-				//dd($activePlayersCount);
-				
-				//if($activePlayersCount == 1){//end of round
-					
-				//}
-				
-				if($activePlayersCount <= 1){//winner is last winner of round - round over, reset game statuses
-					if($winnerDepthId == $maxDepth){//won the finals
+				$depthCount = DB::table('participants')->where('tournamentId', $tournament['id'])->where('gameStatus', 0)->count();
+				$winnerUpdate['gameStatus'] = 1;
+				//dd($depthCount);
+				if($depthCount <= 2){//winner is last winner of round - round over, reset game statuses
+					if($winner['depthId'] == (int)(floor(log($playerCount, 2))) - 1){//won the finals
 						//dd((int)(floor(log($playerCount, 2))) - 1);
 						//DB::table('tournaments')->where('id', $tournamentId)->update(['status' => 1, 'end_date' => date('Y-m-d H:i:s')]);
 						$tournamentStatus = 1;
 						$tournamentEndDate = date('Y-m-d H:i:s');
 					}
-					else if($winnerDepthId == $maxDepth - 2){//semi finals done, start finals
+					else if($winner['depthId'] == (int)(floor(log($playerCount, 2))) - 2){//semi finals done, start finals
 						$tournamentStatus = 2;
 					}
-					else if($winnerDepthId == $maxDepth - 3){//quarter finals done, start semi
+					else if($winner['depthId'] == (int)(floor(log($playerCount, 2))) - 3){//quarter finals done, start semi
 						$tournamentStatus = 3;
 					}
-					else if($winnerDepthId == $maxDepth - 4){//round of 8 done, start quarters
+					else if($winner['depthId'] == (int)(floor(log($playerCount, 2))) - 4){//round of 8 done, start quarters
 						$tournamentStatus = 4;
 					}
 					else{
@@ -618,32 +603,24 @@ class AcketViewController extends Controller{
 				}					
 				
 				
-				
 				$gameDepth = $winner['depthId'];
 				$jsonString = $tournament['brackets'];
 				$json = json_decode($jsonString, true);
-
-				$newGameIdString = 'game' . floor(max($winner['gameId'], 1)/2);
-				$newDepthIdString = 'depth' . ($winner['depthId'] + 1);
-				
-				if(!array_key_exists($newGameIdString, $json[$newDepthIdString]) && !array_key_exists('game0', $json[$newDepthIdString])){
-					$json[$newDepthIdString]['winner'] = $winner['name'];
-					$st = 1;
+				//if(array_key_exists('winner', $json['depth']['game']))]){
+				//if(array_key_exists('winner', $json['depth' . ($winner['depthId'] + 1)]['game' . floor($winner['gameId'] / 2)])){
+				if(!array_key_exists('game' . floor($winner['gameId'] / 2), $json['depth' . ($winner['depthId'] + 1)])){
+					$json['depth' . ($winner['depthId'] + 1)]['winner'] = $winner['name'];
 				}
 				else{
-					if($json[$newDepthIdString][$newGameIdString]['p0'] == ''){//is empty position
-						$json[$newDepthIdString][$newGameIdString]['p0'] = $winner['name'];
+					if($json['depth' . ($winner['depthId'] + 1)]['game' . floor($winner['gameId'] / 2)]['p0'] == ''){//empty position
+						$json['depth' . ($winner['depthId'] + 1)]['game' . floor($winner['gameId'] / 2)]['p0'] = $winner['name'];
 						$winnerUpdate['participantSide'] = 0;
-						$st = 2;
 					}
 					else{//take the other side
-						$json[$newDepthIdString][$newGameIdString]['p1'] = $winner['name'];
+						$json['depth' . ($winner['depthId'] + 1)]['game' . floor($winner['gameId'] / 2)]['p1'] = $winner['name'];
 						$winnerUpdate['participantSide'] = 1;
-						$st = 3;
 					}
 				}
-				
-				//dd($st);
 				
 				$brackets = json_encode($json);
 				

@@ -30,7 +30,6 @@ class CreateController extends Controller{
 			$hostId = Auth::id();
 			$tags = Input::get('tags');
 			$participantInput = Input::get('participants');
-			$isSeedRandomized = Input::get('seedRandomized');//keep this or no?
 			$json = "";
 
 			//Participant List Handling:
@@ -59,8 +58,11 @@ class CreateController extends Controller{
 			//TODO:  Create the JSON based on participants list
 			$players = preg_split("/[\s,]+/", $participantList);
 			shuffle($players);
+			$playersSafe = $players;
 			$num_of_players = sizeof($players);
 
+			$insertArray = array();
+			
 			if($num_of_players<=1){ //no games can be done
 				return Redirect::to("/create/");
 			}
@@ -75,8 +77,30 @@ class CreateController extends Controller{
 				  $pow = (int)(floor(log($num_of_players, 2)));
 				  $temp_game = 'game'.$cur_game;
 				  $p0 = $players[$counter];
+				  //
+				  $participant = array();
+				  $participant['participantId'] = $counter;
+				  $participant['name'] = $players[$counter];
+				  $participant['gameStatus'] = 0;
+				  $participant['depthId'] = 0;
+				  $participant['gameId'] = floor($counter / 2);
+				  $participant['participantSide'] = 0;
+				  $insertArray[] = $participant;
+				  //
 				  $counter++;
 				  $p1 = $players[$counter];
+				  //
+				  $participant = array();
+				  $participant['participantId'] = $counter;
+				  $participant['name'] = $players[$counter];
+				  $participant['gameStatus'] = 0;
+				  $participant['depthId'] = 0;
+				  $participant['gameId'] = floor($counter / 2);
+				  $participant['participantSide'] = 1;
+				  $insertArray[] = $participant;				  
+				  //
+				  
+				  
 				  $json_array[$temp_dep][$temp_game] = array(
 					'p0' => $p0,
 					'p1' => $p1
@@ -94,9 +118,9 @@ class CreateController extends Controller{
 					$cur_game = 0;
 					while($counter<$num_of_players){
 						$temp_game = 'game'.$cur_game;
-						$p0 = 'game'.$counter;
+						$p0 = '';//'game'.$counter;
 						$counter++;
-						$p1 = 'game'.$counter;
+						$p1 = '';//'game'.$counter;
 						$json_array[$temp_dep][$temp_game] = array(
 							'p0' => $p0,
 							'p1' => $p1
@@ -109,7 +133,7 @@ class CreateController extends Controller{
 
 					$temp_dep = 'depth'.$cur_depth;
 					$json_array[$temp_dep] = array(
-						'winner' => 'game0'
+						'winner' => ''//changed line
 						);
 				}
 			}
@@ -117,12 +141,13 @@ class CreateController extends Controller{
 				$pow = (int)(floor(log($num_of_players, 2)));
 				$remain = $num_of_players - pow(2, $pow);
 				$first_round_players = array();
-				for($i=0; $i<(2*$remain); $i++){
+				for($i = 0; $i < (2 * $remain); $i++){
 				  $cur = array_pop($players);
 				  array_push($first_round_players, $cur);
 				}
-				for($i=0; $i<$remain; $i++){
-				  $temp = "game".$i;
+				for($i = 0; $i < $remain; $i++){
+				  //$temp = "game".$i;
+				  $temp = "";
 				  array_splice($players, (1+2*$i), 0,  $temp);
 				}
 
@@ -134,7 +159,33 @@ class CreateController extends Controller{
 				while(!empty($first_round_players)){
 				  $temp = 'game'.$cur_game;
 				  $p0 = array_pop($first_round_players);
+						//
+						$participantId = array_search($p0, $playersSafe);
+						//if($p0 != "" && $participantId != null){
+							$participant = array();
+							$participant['participantId'] = $participantId;
+							$participant['name'] = $p0;
+							$participant['gameStatus'] = 0;
+							$participant['depthId'] = 0;
+							$participant['gameId'] = $cur_game;//floor($participant['participantId'] / 2);
+							$participant['participantSide'] = 0;
+							$insertArray[] = $participant;
+						//}
+						//
 				  $p1 = array_pop($first_round_players);
+						//
+						$participantId = array_search($p1, $playersSafe);
+						//if($p1 != "" && $participantId != null){
+							$participant = array();
+							$participant['participantId'] = $participantId;
+							$participant['name'] = $p1;
+							$participant['gameStatus'] = 0;
+							$participant['depthId'] = 0;
+							$participant['gameId'] = $cur_game;//floor($participant['participantId'] / 2);
+							$participant['participantSide'] = 1;
+							$insertArray[] = $participant;
+						//}
+						//
 				  $json_array['depth0'][$temp] = array(
 					'p0' => $p0,
 					'p1' => $p1
@@ -148,19 +199,53 @@ class CreateController extends Controller{
 				$counter = 0;
 				$temp_dep = 'depth'.$cur_depth;
 				$json_array[$temp_dep] = array();
-				while($counter<$num_of_players){
-				  $temp_game = 'game'.$cur_game;
-				  $p0 = $players[$counter];
-				  $counter++;
-				  $p1 = $players[$counter];
-				  $json_array[$temp_dep][$temp_game] = array(
-					'p0' => $p0,
-					'p1' => $p1
-				  );
-				  $counter++;
-				  $cur_game++;
+				while($counter<$num_of_players){//handling depth1 (second depth)
+						$temp_game = 'game'.$cur_game;
+						$p0 = $players[$counter];
+						//dd($players);
+						//
+						
+						if($p0 != "" && in_array($p0, $playersSafe)){
+							//$hasP1 = true;
+							$participantId = array_search($p0, $playersSafe);
+							$participant = array();
+							$participant['participantId'] = $participantId;
+							$participant['name'] = $playersSafe[$participantId];
+							$participant['gameStatus'] = 1;
+							$participant['depthId'] = 1;
+							$participant['gameId'] = $cur_game;//floor($participantId / 2);
+							$participant['participantSide'] = 0;
+							$insertArray[] = $participant;
+						}
+						//
+						$counter++;
+						$p1 = $players[$counter];
+						//
+						
+						if($p1 != "" && in_array($p1, $playersSafe)){
+							//$hasP2 = true;
+							$participant = array();
+							$participantId = array_search($p1, $playersSafe);
+							$participant['participantId'] = $participantId;
+							$participant['name'] = $playersSafe[$participantId];
+							$participant['gameStatus'] = 1;
+							$participant['depthId'] = 1;
+							$participant['gameId'] = $cur_game;//floor($participantId / 2);
+							$participant['participantSide'] = 1;
+							$insertArray[] = $participant;
+						}
+						//
+						
+						
+					$json_array[$temp_dep][$temp_game] = array(
+						'p0' => $p0,
+						'p1' => $p1
+					);
+					$counter++;
+					$cur_game++;
 				}
-				$cur_depth++;
+				
+				$cur_depth++;//Handling depth2 (second depth) and onward now:
 				$num_of_players = $num_of_players/2;
 
 				while($cur_depth<=$pow){
@@ -170,9 +255,9 @@ class CreateController extends Controller{
 				  $cur_game = 0;
 				  while($counter<$num_of_players){
 					$temp_game = 'game'.$cur_game;
-					$p0 = 'game'.$counter;
+					$p0 = '';//'game'.$counter;
 					$counter++;
-					$p1 = 'game'.$counter;
+					$p1 = '';//'game'.$counter;
 					$json_array[$temp_dep][$temp_game] = array(
 					  'p0' => $p0,
 					  'p1' => $p1
@@ -186,26 +271,19 @@ class CreateController extends Controller{
 
 				$temp_dep = 'depth'.$cur_depth;
 				$json_array[$temp_dep] = array(
-				  'winner' => 'game0'
+				  'winner' => ''//changed line
 				);
 			}
 
 			$json = json_encode($json_array);
 
-
-			
 			DB::table('tournaments')->insert(array('name'=>$name, 'description'=>$description, 'hostId'=>$hostId, 'participantList'=>$participantList, 'tags'=>$tags, 'brackets'=>$json));
 			$acketId = DB::getPdo()->lastInsertId();
 			
-			$insertArray = array();
-			$participantId = 0;
-			foreach($participantsArray as $participant){
-				$insert['tournamentId'] = $acketId;
-				$insert['participantId'] = $participantId;
-				$insert['name'] = $participant;
-				$participantId++;
-				$insertArray[] = $insert;
+			foreach($insertArray as &$participant){
+				$participant['tournamentId'] = $acketId;
 			}
+			unset($participant);
 
 			DB::table('participants')->insert($insertArray);
 		

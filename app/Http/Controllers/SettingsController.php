@@ -24,6 +24,7 @@ class SettingsController extends Controller{
 
 		$returnView = View::make('settings')->with([
 				"name" => $name,
+				"description" => $description,
 				"settingsTable" => $settingsTable
 			]);
 			

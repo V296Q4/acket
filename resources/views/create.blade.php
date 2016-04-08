@@ -38,7 +38,7 @@
 						<div class="form-group">
 							<label class="control-label col-sm-3" for="name">Description:</label>
 							<div class="col-sm-6"> 
-								<textarea class="form-control" rows="8" name="description" placeholder="Who? What? When? Where? Why?"></textarea>
+								<textarea class="form-control" rows="8" name="description" placeholder="Who? What? When? Where? Why?">Who? What? When? Where? Why?</textarea>
 							</div>
 						</div>
 						<div class="form-group">

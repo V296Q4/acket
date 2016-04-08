@@ -18,7 +18,7 @@
 							
 							<label class="control-label col-sm-2" for="name">User Description:</label>
 							<div class="col-sm-6"> 
-								<textarea class="form-control" rows="8" name="description" placeholder="What do you want to tell users about yourself?"></textarea>
+								<textarea class="form-control" rows="8" name="description" placeholder="What do you want to tell users about yourself?">{{ $description}}</textarea>
 							</div>
 						</div>
 
