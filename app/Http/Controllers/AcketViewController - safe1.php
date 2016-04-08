@@ -95,7 +95,7 @@ class AcketViewController extends Controller{
 
     $cords_array = array();
 
-	$svg = '<div style="background:#efefef; width: 900px; height: '.($div_height).'px; overflow:scroll; overflow-y:scroll;"><svg height="'.($svg_height).'" width="'.($svg_width).'"><g>';
+    $svg = '<div style="width: 900px; height: '.($div_height).'px; overflow:scroll; overflow-y:scroll;"><svg height="'.($svg_height).'" width="'.($svg_width).'"><g>';
     $svg = $svg.'<rect x="0" y="0" width="'.($svg_width).'" height="'.($svg_height).'" style="fill:#efefef;" />';
 
 
@@ -116,18 +116,16 @@ class AcketViewController extends Controller{
         foreach($second_round as $game){
           $p0 = $game['p0'];
           $p1 = $game['p1'];
-			$display_name = (preg_match("/(^(game))(([0-9])+)/", $p0)) ? " ":$p0;
           $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-          $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$display_name.'</text>';
+          $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p0.'</text>';
           $cords_array[1][] = array(
             'pname' => $p0,
             'x' => $x_cord,
             'y' => $y_cord
           );
           $y_cord = $y_cord+25;
-			$display_name = (preg_match("/(^(game))(([0-9])+)/", $p1)) ? " ":$p1;
           $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-          $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$display_name.'</text>';
+          $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p1.'</text>';
           $cords_array[1][] = array(
             'pname' => $p1,
             'x' => $x_cord,
@@ -144,18 +142,16 @@ class AcketViewController extends Controller{
           $p0 = $game['p0'];
           $p1 = $game['p1'];
           $y_cord = $cords_array[1][$temp_counter]['y']+25;
-			$display_name = (preg_match("/(^(game))(([0-9])+)/", $p0)) ? " ":$p0;
           $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-          $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$display_name.'</text>';
+          $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p0.'</text>';
           $cords_array[0][] = array(
             'pname' => $p0,
             'x' => $x_cord,
             'y' => $y_cord
           );
           $y_cord = $y_cord+25;
-$display_name = (preg_match("/(^(game))(([0-9])+)/", $p1)) ? " ":$p1;
           $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-         $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$display_name.'</text>';
+          $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p1.'</text>';
           $svg = $svg.'<polyline points="'.($x_cord+150).','.($y_cord).' '.($x_cord+175).','.($y_cord).' '.($x_cord+175).','.($y_cord-25).' '.($x_cord+200).','.($y_cord-25).'" style="fill:#efefef;stroke:black;stroke-width:2" />';
           $y_cord = $y_cord+45;
           $cords_array[0][] = array(
@@ -181,18 +177,16 @@ $display_name = (preg_match("/(^(game))(([0-9])+)/", $p1)) ? " ":$p1;
               $y_cord = ($num1 + ($num2-$num1)/2)-25;
               $p0 = $game['p0'];
               $p1 = $game['p1'];
-				$display_name = (preg_match("/(^(game))(([0-9])+)/", $p0)) ? " ":$p0;
               $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-              $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$display_name.'</text>';
+              $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p0.'</text>';
               $cords_array[$i][] = array(
                 'pname' => $p0,
                 'x' => $x_cord,
                 'y' => $y_cord
               );
               $y_cord = $y_cord+25;
-				$display_name = (preg_match("/(^(game))(([0-9])+)/", $p1)) ? " ":$p1;
               $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-                $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$display_name.'</text>';
+              $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p1.'</text>';
               $svg = $svg.'<polyline points="'.($x_cord).','.($y_cord).' '.($x_cord-25).','.($y_cord).' '.($x_cord-25).','.($num1+25).' '.($x_cord-50).','.($num1+25).'" style="fill:#efefef;stroke:black;stroke-width:2" />';
               $svg = $svg.'<polyline points="'.($x_cord).','.($y_cord).' '.($x_cord-25).','.($y_cord).' '.($x_cord-25).','.($num2-25).' '.($x_cord-50).','.($num2-25).'" style="fill:#efefef;stroke:black;stroke-width:2" />';
               $cords_array[$i][] = array(
@@ -204,11 +198,10 @@ $display_name = (preg_match("/(^(game))(([0-9])+)/", $p1)) ? " ":$p1;
             }
           }else{  //winner
             $winner = $brackets[$cur_dep]['winner'];
-			$display_name = (preg_match("/(^(game))(([0-9])+)/", $winner)) ? " ":$winner;
             $num1 = $cords_array[$i-1][0]['y'];
             $y_cord = $num1+(25/2);
             $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$display_name.'</text>';
+            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$winner.'</text>';
             $svg = $svg.'<line x1="'.($x_cord).'" y1="'.($y_cord+12.5).'" x2="'.($x_cord-50).'" y2="'.($y_cord+12.5).'" style="stroke:black; stroke-width:2" />';
             $cords_array[$i][] = array(
               'pname' => $winner,
@@ -229,18 +222,16 @@ $display_name = (preg_match("/(^(game))(([0-9])+)/", $p1)) ? " ":$p1;
         foreach($second_round as $game){
           $p0 = $game['p0'];
           $p1 = $game['p1'];
-			$display_name = (preg_match("/(^(game))(([0-9])+)/", $p0)) ? " ":$p0;
           $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-			$svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$display_name.'</text>';
+          $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p0.'</text>';
           $cords_array[1][] = array(
             'pname' => $p0,
             'x' => $x_cord,
             'y' => $y_cord
           );
           $y_cord = $y_cord+25;
-			$display_name = (preg_match("/(^(game))(([0-9])+)/", $p1)) ? " ":$p1;
           $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-          $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$display_name.'</text>';
+          $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p1.'</text>';
           $cords_array[1][] = array(
             'pname' => $p1,
             'x' => $x_cord,
@@ -263,23 +254,21 @@ $display_name = (preg_match("/(^(game))(([0-9])+)/", $p1)) ? " ":$p1;
           $p1_r2 = $cords_array[1][$temp_counter+1]['pname'];
 
 
-           if(preg_match("/(^(game))(([0-9])+)/", $p0_r2) && preg_match("/(^(game))(([0-9])+)/", $p1_r2)){
+          if(preg_match("/(^(game))(([0-9])+)/", $p0_r2) && preg_match("/(^(game))(([0-9])+)/", $p1_r2)){//changed this line
             $y_cord = $cords_array[1][$temp_counter]['y']-25;
-            $display_name = (preg_match("/(^(game))(([0-9])+)/", $p0)) ? " ":$p0;
             $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$display_name.'</text>';
+            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p0.'</text>';
             $cords_array[0][] = array(
               'pname' => $p0,
               'x' => $x_cord,
               'y' => $y_cord
             );
             $y_cord = $y_cord+25;
-            $display_name = (preg_match("/(^(game))(([0-9])+)/", $p1)) ? " ":$p1;
             $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$display_name.'</text>';
+            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p0.'</text>';
             $svg = $svg.'<polyline points="'.($x_cord+150).','.($y_cord).' '.($x_cord+175).','.($y_cord).' '.($x_cord+175).','.($y_cord+25).' '.($x_cord+200).','.($y_cord+25).'" style="fill:#efefef;stroke:black;stroke-width:2" />';
             $cords_array[0][] = array(
-              'pname' => $p1,
+              'pname' => $p0,
               'x' => $x_cord,
               'y' => $y_cord
             );
@@ -287,39 +276,35 @@ $display_name = (preg_match("/(^(game))(([0-9])+)/", $p1)) ? " ":$p1;
             $key_idx++;
             $p0 = $first_round[$first_round_keys[$key_idx]]['p0'];
             $p1 = $first_round[$first_round_keys[$key_idx]]['p1'];
-            $display_name = (preg_match("/(^(game))(([0-9])+)/", $p0)) ? " ":$p0;
             $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$display_name.'</text>';
+            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p0.'</text>';
             $cords_array[0][] = array(
               'pname' => $p0,
               'x' => $x_cord,
               'y' => $y_cord
             );
             $y_cord = $y_cord+25;
-            $display_name = (preg_match("/(^(game))(([0-9])+)/", $p1)) ? " ":$p1;
             $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$display_name.'</text>';
+            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p0.'</text>';
             $svg = $svg.'<polyline points="'.($x_cord+150).','.($y_cord).' '.($x_cord+175).','.($y_cord).' '.($x_cord+175).','.($y_cord-25).' '.($x_cord+200).','.($y_cord-25).'" style="fill:#efefef;stroke:black;stroke-width:2" />';
             $cords_array[0][] = array(
-              'pname' => $p1,
+              'pname' => $p0,
               'x' => $x_cord,
               'y' => $y_cord
             );
             $temp_counter = $temp_counter+2;
           }else{
             $y_cord = $cords_array[1][$temp_counter]['y']+25;
-            $display_name = (preg_match("/(^(game))(([0-9])+)/", $p0)) ? " ":$p0;
             $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$display_name.'</text>';
+            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p0.'</text>';
             $cords_array[0][] = array(
               'pname' => $p0,
               'x' => $x_cord,
               'y' => $y_cord
             );
             $y_cord = $y_cord+25;
-            $display_name = (preg_match("/(^(game))(([0-9])+)/", $p1)) ? " ":$p1;
             $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$display_name.'</text>';
+            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p1.'</text>';
             $svg = $svg.'<polyline points="'.($x_cord+150).','.($y_cord).' '.($x_cord+175).','.($y_cord).' '.($x_cord+175).','.($y_cord-25).' '.($x_cord+200).','.($y_cord-25).'" style="fill:#efefef;stroke:black;stroke-width:2" />';
             $y_cord = $y_cord+45;
             $cords_array[0][] = array(
@@ -348,18 +333,16 @@ $display_name = (preg_match("/(^(game))(([0-9])+)/", $p1)) ? " ":$p1;
               $y_cord = ($num1 + ($num2-$num1)/2)-25;
               $p0 = $game['p0'];
               $p1 = $game['p1'];
-              $display_name = (preg_match("/(^(game))(([0-9])+)/", $p0)) ? " ":$p0;
               $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-              $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$display_name.'</text>';
+              $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p0.'</text>';
               $cords_array[$i][] = array(
                 'pname' => $p0,
                 'x' => $x_cord,
                 'y' => $y_cord
               );
               $y_cord = $y_cord+25;
-              $display_name = (preg_match("/(^(game))(([0-9])+)/", $p1)) ? " ":$p1;
               $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-              $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$display_name.'</text>';
+              $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p1.'</text>';
               $svg = $svg.'<polyline points="'.($x_cord).','.($y_cord).' '.($x_cord-25).','.($y_cord).' '.($x_cord-25).','.($num1+25).' '.($x_cord-50).','.($num1+25).'" style="fill:#efefef;stroke:black;stroke-width:2" />';
               $svg = $svg.'<polyline points="'.($x_cord).','.($y_cord).' '.($x_cord-25).','.($y_cord).' '.($x_cord-25).','.($num2-25).' '.($x_cord-50).','.($num2-25).'" style="fill:#efefef;stroke:black;stroke-width:2" />';
               $cords_array[$i][] = array(
@@ -371,11 +354,10 @@ $display_name = (preg_match("/(^(game))(([0-9])+)/", $p1)) ? " ":$p1;
             }
           }else{  //winner
             $winner = $brackets[$cur_dep]['winner'];
-            $display_name = (preg_match("/(^(game))(([0-9])+)/", $winner)) ? " ":$winner;
             $num1 = $cords_array[$i-1][0]['y'];
             $y_cord = $num1+(25/2);
             $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$display_name.'</text>';
+            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$winner.'</text>';
             $svg = $svg.'<line x1="'.($x_cord).'" y1="'.($y_cord+12.5).'" x2="'.($x_cord-50).'" y2="'.($y_cord+12.5).'" style="stroke:black; stroke-width:2" />';
             $cords_array[$i][] = array(
               'pname' => $winner,
@@ -385,7 +367,8 @@ $display_name = (preg_match("/(^(game))(([0-9])+)/", $p1)) ? " ":$p1;
           }
         }
       }
-	}else{
+    }
+		else{
 			/*
 			num of players is power of 2
 			so draw the first round boxes first
@@ -402,18 +385,16 @@ $display_name = (preg_match("/(^(game))(([0-9])+)/", $p1)) ? " ":$p1;
       foreach($second_round as $game){
         $p0 = $game['p0'];
         $p1 = $game['p1'];
-        $display_name = (preg_match("/(^(game))(([0-9])+)/", $p0)) ? " ":$p0;
         $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-        $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$display_name.'</text>';
+        $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p0.'</text>';
         $cords_array[0][] = array(
           'pname' => $p0,
           'x' => $x_cord,
           'y' => $y_cord
         );
         $y_cord = $y_cord+25;
-        $display_name = (preg_match("/(^(game))(([0-9])+)/", $p1)) ? " ":$p1;
         $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-        $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$display_name.'</text>';
+        $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p1.'</text>';
         $cords_array[0][] = array(
           'pname' => $p1,
           'x' => $x_cord,
@@ -437,18 +418,16 @@ $display_name = (preg_match("/(^(game))(([0-9])+)/", $p1)) ? " ":$p1;
             $y_cord = ($num1 + ($num2-$num1)/2)-25;
             $p0 = $game['p0'];
             $p1 = $game['p1'];
-            $display_name = (preg_match("/(^(game))(([0-9])+)/", $p0)) ? " ":$p0;
             $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$display_name.'</text>';
+            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p0.'</text>';
             $cords_array[$i][] = array(
               'pname' => $p0,
               'x' => $x_cord,
               'y' => $y_cord
             );
             $y_cord = $y_cord+25;
-            $display_name = (preg_match("/(^(game))(([0-9])+)/", $p1)) ? " ":$p1;
             $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$display_name.'</text>';
+            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p1.'</text>';
             $svg = $svg.'<polyline points="'.($x_cord).','.($y_cord).' '.($x_cord-25).','.($y_cord).' '.($x_cord-25).','.($num1+25).' '.($x_cord-50).','.($num1+25).'" style="fill:#efefef;stroke:black;stroke-width:2" />';
             $svg = $svg.'<polyline points="'.($x_cord).','.($y_cord).' '.($x_cord-25).','.($y_cord).' '.($x_cord-25).','.($num2-25).' '.($x_cord-50).','.($num2-25).'" style="fill:#efefef;stroke:black;stroke-width:2" />';
             $cords_array[$i][] = array(
@@ -458,24 +437,22 @@ $display_name = (preg_match("/(^(game))(([0-9])+)/", $p1)) ? " ":$p1;
             );
             $temp_counter++;
           }
-        }else{  //winner
-
-
-          $winner = $brackets[$cur_dep]['winner'];
-          $display_name = (preg_match("/(^(game))(([0-9])+)/", $winner)) ? " ":$winner;
-          $num1 = $cords_array[$i-1][0]['y'];
-          $y_cord = $num1+(25/2);
-          $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-          $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$display_name.'</text>';
-          $svg = $svg.'<line x1="'.($x_cord).'" y1="'.($y_cord+12.5).'" x2="'.($x_cord-50).'" y2="'.($y_cord+12.5).'" style="stroke:black; stroke-width:2" />';
-          $cords_array[$i][] = array(
-            'pname' => $winner,
-            'x' => $x_cord,
-            'y' => $y_cord
-          );
         }
-      }
-    }
+			else{  //winner
+				$winner = $brackets[$cur_dep]['winner'];
+				$num1 = $cords_array[$i-1][0]['y'];
+				$y_cord = $num1+(25/2);
+				$svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
+				$svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$winner.'</text>';
+				$svg = $svg.'<line x1="'.($x_cord).'" y1="'.($y_cord+12.5).'" x2="'.($x_cord-50).'" y2="'.($y_cord+12.5).'" style="stroke:black; stroke-width:2" />';
+				$cords_array[$i][] = array(
+						'pname' => $winner,
+						'x' => $x_cord,
+						'y' => $y_cord
+					);
+			}
+		}
+	}
 
 		$svg = $svg.'</g></svg></div>';
 
