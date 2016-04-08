@@ -19,10 +19,58 @@ class AcketViewController extends Controller{
 
     $hostName = $host['name'];
     $status = $tournament['status'];
+
+		$statusString = '';
+		switch($status){//TODO:find new place for this repeated code
+			case 0:
+				$statusString = 'Not yet started.';
+				break;
+			case 1:
+				$statusString = 'Complete.';
+				break;						
+			case 2:
+				$statusString = 'Finals in progress.';
+				break;			
+			case 3:
+				$statusString = 'Semi finals in progress.';
+				break;
+			case 4:
+				$statusString = 'Quarter finals in progress.';
+				break;
+			case 5:
+				$statusString = 'Round in progress.';
+				break;	
+				
+			case 6:
+				$statusString = 'Unknown status.';
+				break;
+			case 7:
+				$statusString = 'Closed.';
+				break;
+			case 8:
+				$statusString = 'Cancelled.';
+				break;
+			case 9:
+				$statusString = 'Deleted.';
+				break;
+		}
+
     $posted_date = $tournament['posted_date'];
     $updated_date = $tournament['updated_date'];
+
+    $match_update_date = $tournament['match_update_date'];
+    if($match_update_date == $posted_date){
+      $match_update_date = "Never";
+    }
+
     $tags = $tournament['tags'];
     $description = $tournament['description'];
+
+		$description_update_date = $tournament['description_update_date'];
+		if($description_update_date == $posted_date){
+			$description_update_date = null;
+		}
+
     $participantList = $tournament['participantList'];
     $participantNames = explode(',', $participantList);
     $participantStatus = array();
@@ -222,10 +270,10 @@ class AcketViewController extends Controller{
             );
             $y_cord = $y_cord+25;
             $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p0.'</text>';
+            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p1.'</text>';
             $svg = $svg.'<polyline points="'.($x_cord+150).','.($y_cord).' '.($x_cord+175).','.($y_cord).' '.($x_cord+175).','.($y_cord+25).' '.($x_cord+200).','.($y_cord+25).'" style="fill:#efefef;stroke:black;stroke-width:2" />';
             $cords_array[0][] = array(
-              'pname' => $p0,
+              'pname' => $p1,
               'x' => $x_cord,
               'y' => $y_cord
             );
@@ -242,10 +290,10 @@ class AcketViewController extends Controller{
             );
             $y_cord = $y_cord+25;
             $svg = $svg.'<rect x="'.$x_cord.'" y="'.$y_cord.'" rx="5" ry="5" width="148" height="24" style="fill:#787878;stroke-width:1;stroke:#efefef;" />';
-            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p0.'</text>';
+            $svg = $svg.'<text x="'.($x_cord+2).'" y="'.($y_cord+15).'" fill="white">'.$p1.'</text>';
             $svg = $svg.'<polyline points="'.($x_cord+150).','.($y_cord).' '.($x_cord+175).','.($y_cord).' '.($x_cord+175).','.($y_cord-25).' '.($x_cord+200).','.($y_cord-25).'" style="fill:#efefef;stroke:black;stroke-width:2" />';
             $cords_array[0][] = array(
-              'pname' => $p0,
+              'pname' => $p1,
               'x' => $x_cord,
               'y' => $y_cord
             );
@@ -422,20 +470,83 @@ class AcketViewController extends Controller{
     }
     $participantTable .= '</tbody></table>';
 
-    $returnView = View::make('acketView')->with([
-      "name" => $name,
-      "tournamentId" => $tournamentId,
-      "hostName" => $hostName,
-      "hostId" => $hostId,
-      "status" => $status,
-      "posted_date" => $posted_date,
-      "updated_date" => $updated_date,
-      "tags" => $tags,
-      "description" => $description,
-      "participantTable" => $participantTable,
-      "svg" => $svg
-    ]);
+
+
+		if(Auth::id() == $hostId){
+			
+			//select game, select winner, update button
+			//DB::table('participants')
+			$matchListDropdown = "<select>";
+			$matchListDropdown .= "</select>";
+			$userIsHost = true;		
+		}
+		else{
+			$userIsHost = false;
+		}			
+
+
+		$returnView = View::make('acketView')->with([
+			"name" => $name,
+			"tournamentId" => $tournamentId,
+			"hostName" => $hostName,
+			"hostId" => $hostId,
+			"status" => $status,
+			"statusString" => $statusString,
+			"posted_date" => $posted_date,
+			"match_update_date" => $match_update_date,
+			"tags" => $tags,
+			"description" => $description,
+			"description_update_date" => $description_update_date,
+			"participantTable" => $participantTable,
+			"svg" => $svg,
+			"userIsHost" => $userIsHost
+		]);
+
 
     return $returnView;
   }
+
+public function UpdateAcket(){
+		$tournamentId = Input::get('tournamentId');
+		if($tournamentId !== null && Auth::check()){
+			if(Input::get("1") !== null){//update tag/desc
+				//TODO: look into this: http://www.easylaravelbook.com/blog/2015/08/26/passing-a-parameter-into-laravel-form-open/
+				if(Auth::user()){//TODO: update this to check $hostId = Auth::id()
+					$newDescription = Input::get('newDescription');
+					$newTags = Input::get('newTags');
+					$updateList = array();
+					$tournament = DB::table('tournaments')->where('id', $tournamentId)->first();
+					if($tournament['description'] != $newDescription){
+						$updateList['description'] = $newDescription;
+						$updateList['description_update_date'] = date('Y-m-d H:i:s');
+					}
+					if($tournament['tags'] != $newTags){
+						$updateList['tags'] = $newTags;
+					}
+					if(count($updateList) >= 1){
+						DB::table('tournaments')->where('id', $tournamentId)->update($updateList);
+					}
+				}			
+			}
+			
+			if(Input::get("2") !== null){//close
+				//TODO: Confirmation box
+				$tournament = DB::table('tournaments')->where('id', $tournamentId)->first();
+				DB::table('tournaments')->where('id', $tournamentId)->update(['status'=>7]);
+			}
+			
+			if(Input::get("3") !== null){//cancel
+				//TODO: Confirmation box
+				$tournament = DB::table('tournaments')->where('id', $tournamentId)->first();
+				DB::table('tournaments')->where('id', $tournamentId)->update(['status'=>8]);
+			}
+			
+			if(Input::get("4") !== null){//log match
+				//TODO: If it is final match, set status to 1
+				
+			}
+			return Redirect::to('/acket/' . $tournamentId);
+		}
+	}
+
 }
